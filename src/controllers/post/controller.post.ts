@@ -13,6 +13,7 @@ const config = ConfigService.getInstance().getConfig();
 export const homePage = async (req:any, res:any, next:any) => {
 
   let images:any = [];
+  let searchText = '';
   try{
     if(req?.session?.imgId){
       const result: any = await postService.getImageList(req?.session?.imgId).catch((error) => {
@@ -20,6 +21,7 @@ export const homePage = async (req:any, res:any, next:any) => {
       });
       if(result){
         images = result?.imgUrl;
+        searchText = ' - ' + result?.prompt;
       }
     }
   } catch (error) {
@@ -33,6 +35,7 @@ export const homePage = async (req:any, res:any, next:any) => {
 
     res.render('pages/dalleai/home.ejs', {
       url: config.baseUrl,
+      searchText,
       title: 'Brain Craft AI Generated Image Service',
       formPanelTitle: 'AI Image Generator Box',
       images,
