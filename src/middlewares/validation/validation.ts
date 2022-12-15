@@ -12,9 +12,9 @@ export const loginBodyValidation: any = [
     .isString()
     .withMessage("The user name should be a string")
     .isEmail()
-    .withMessage("User name should be an email address"),
+    .withMessage("Wrong pattern of username"),
 
     check('password')
     .isLength({ min: 5 })
-    .withMessage("Password min length should 5")
+    .withMessage("wrong pattern of password.")
 ]

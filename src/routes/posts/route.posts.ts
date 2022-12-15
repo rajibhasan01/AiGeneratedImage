@@ -13,15 +13,6 @@ const config = ConfigService.getInstance().getConfig();
 const postRoute = express.Router();
 
 
-const checkAuth = (req: any, res: any, next: any) => {
-    if (req?.session?.userName === config.superadmin.username) {
-      next();
-    } else {
-      res.redirect("auth/login");
-      // next();
-    }
-  };
-
 postRoute.get('/', homePage);
 postRoute.post('/', postBodyValidation, generateImage);
 

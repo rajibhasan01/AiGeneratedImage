@@ -11,38 +11,41 @@ const loginService = LoginService.getInstance();
  * admin login
  */
 export const loginPage = async (req: any, res: any) => {
-    let error = false;
-    if (typeof req.session !== undefined) {
-        error = req?.session?.error;
-        delete req?.session?.error;
-    }
+    const error = (req.session.error !== undefined) ? req.session.error : null;
+    delete req.session.error;
+    delete req.session.success;
     res.render("pages/login.ejs", { title: "Login", error });
 }
 
 
-export const adminLogin = async (req: Request & { body: Login }, res: any) => {
+export const adminLogin = async (req: Request & { body: Login } & {session: any}, res: any) => {
     const data: Login = req.body;
 
     try {
         const error = validationResult(req).formatWith(({ msg }) => msg);
         const hasError = !error.isEmpty();
         if (hasError) {
-          res.status(422).json({ status: 422, message: error.array().join(', ') });
+            req.session.error = error.array().join(', ');
+            res.redirect('/auth/login');
+        //   res.status(422).json({ status: 422, message: error.array().join(', ') });
         } else {
-            const result = await loginService.userLogin(data).catch((err) => {
+            const result:any = await loginService.userLogin(data).catch((err) => {
                 throw error;
             });
             if(result){
-                res.status(200).json(result);
+                req.session.accessToken = result.token;
+                res.redirect('/');
+                // res.status(200).json(result);
             }
-            // Write code here
         }
       } catch (error) {
-        res.status(403).json({status: 403, message: "Select different words" });
+        req.session.error = "Incorrect Username and/or Password!";
+        res.redirect('/auth/login')
+        // res.status(403).json({status: 403, message: "Invalid Token" });
       }
 };
 
-export const adminLogout = async (req: any, res: any) => {
-    // req.session.destroy();
+export const adminLogout = async (req: Request & {session: any}, res: any) => {
+    req.session.destroy();
     res.redirect('/auth/login')
 }

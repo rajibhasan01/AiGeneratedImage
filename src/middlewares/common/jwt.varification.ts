@@ -110,4 +110,29 @@ export class JwtAuthentication implements IAuthService{
             })
         };
     }
+
+    // Authenticate req.session for ejs
+    public async checkEjsToken(token: any){
+        try{
+            return new Promise(async(resolve, reject) => {
+
+                if (typeof token !== 'undefined'){
+                    jwt.verify(token, tokenSecret, (error: any, authData: any) => {
+                        if(error){
+                            reject("Invalid Token!");
+                        } else {
+                            resolve(authData);
+                        }
+                    });
+                } else {
+                    reject("Invalid Token!");
+                };
+            }).catch((err) => {
+                throw err;
+            });
+
+        } catch(error){
+            throw error;
+        }
+    }
 }
