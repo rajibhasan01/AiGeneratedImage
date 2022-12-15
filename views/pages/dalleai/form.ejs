@@ -1,0 +1,68 @@
+<div class="card">
+    <div class="card-header">
+        <h5><%=  formPanelTitle %></h5>
+    </div>
+    <div class="card-body">
+        <form action="/" method="POST">
+            <div class="row mb-3">
+                <label for="name" class="col-3 col-form-label text-md-right fw-bold">Prompt</label>
+                <div class="col-9">
+                    <input type="text" class="form-control" id="name" name="prompt" placeholder="Enter plain text here" required
+                    />
+                </div>
+            </div>
+            <div class="row mb-3">
+                <!-- Radio Button -->
+                <p>Choose Image Size From Below</p>
+                <div class="d-flex">
+                 <div class="form-check form-check-inline">
+                     <input class="form-check-input rbtn" type="radio" name="imgSize" id="256x256"
+                         value="256x256" checked="checked">
+                     <label class="form-check-label text-primary" for="256x256">256x256</label>
+                 </div>
+                 <div class="form-check form-check-inline">
+                     <input class="form-check-input rbtn" type="radio" name="imgSize" id="512×512"
+                         value="512×512">
+                     <label class="form-check-label text-info" for="512×512">512×51</label>
+                 </div>
+                 <div class="form-check form-check-inline">
+                     <input class="form-check-input rbtn" type="radio" name="imgSize" id="1024x1024"
+                         value="1024x1024">
+                     <label class="form-check-label text-success" for="1024x1024">1024x1024</label>
+                 </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                   <!-- Radio Button -->
+                   <p>Choose Image Quantity</p>
+                   <div class="d-flex">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input rbtn" type="radio" name="imgCount" id="1"
+                            value="1" checked="checked">
+                        <label class="form-check-label text-primary" for="1">1</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input rbtn" type="radio" name="imgCount" id="2"
+                            value="2">
+                        <label class="form-check-label text-info" for="2">2</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input rbtn" type="radio" name="imgCount" id="3"
+                            value="3">
+                        <label class="form-check-label text-success" for="3">3</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input rbtn" type="radio" name="imgCount" id="4"
+                            value="4">
+                        <label class="form-check-label text-danger" for="4">4</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-9 offset-3">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

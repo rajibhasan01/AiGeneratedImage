@@ -1,0 +1,25 @@
+<%- include('../../partials/header') %>
+<%- include('../../partials/sidebar') %>
+<%- include('../../partials/page-header') %>
+<%- include('../../partials/notifications') %>
+<div class="row">
+    <div class="col-12 col-lg-4">
+        <%- include('../dalleai/form') %>
+    </div>
+    <div class="col-12 col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h5>Image List</h5>
+            </div>
+            <div class="card-body">
+
+            <ul>
+                <% images.forEach(function(img) { %>
+                <img src=<%= url+img %> alt="">
+                <% }); %>
+            </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('../../partials/footer') %>

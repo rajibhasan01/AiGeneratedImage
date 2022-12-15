@@ -14,7 +14,7 @@ export const loginPage = async (req: any, res: any) => {
     const error = (req.session.error !== undefined) ? req.session.error : null;
     delete req.session.error;
     delete req.session.success;
-    res.render("pages/login.ejs", { title: "Login", error });
+    res.render("pages/login/login.ejs", { title: "Login", error });
 }
 
 

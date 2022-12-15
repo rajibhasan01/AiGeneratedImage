@@ -1,5 +1,5 @@
 // External import
-import { MongoClient } from "mongodb";
+import { MongoClient, ObjectId } from "mongodb";
 
 // Internal import
 import { Post } from "../../../model/model.post";
@@ -57,6 +57,34 @@ export class DbPost {
     } catch (error) {
       console.log(
         "Error in CreatePost method of DbPost class: ",
+        error.message
+      );
+      throw error;
+    }
+  }
+
+  public async getImageInfo(imgId: any) {
+    try {
+      return await new Promise(async (resolve, reject) => {
+        const dbConn = await this.getDbConnection();
+        const db = dbConn.db(config.mongo.dbName);
+        const dbCollection = db.collection(this.collectionName);
+        const result = await dbCollection.findOne({_id: new ObjectId(imgId)}).catch(error => {
+          reject(error);
+        });
+        await dbConn.close();
+        if (result) {
+          resolve(result);
+        } else {
+          reject(result);
+        }
+      }).catch((error) => {
+        console.log("Error in getPost method of DbPost class: ", error);
+        throw error;
+      });
+    } catch (error) {
+      console.log(
+        "Error in getPost method of DbPost class: ",
         error.message
       );
       throw error;

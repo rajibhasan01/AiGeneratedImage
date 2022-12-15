@@ -1,0 +1,27 @@
+</div>
+</main>
+<!-- page-content" -->
+</div>
+<!-- page-wrapper -->
+<footer class="text-center position-absolute w-100 bottom-0 pb-2  text-center">
+    <hr>
+    <div class="mb-2">
+        <small>
+            Copyright &copy; <%= new Date().getFullYear();%>
+            <a target="_blank" rel="noopener noreferrer" href="https://braincraftapps.com">
+                Braincraft Ltd.
+            </a>
+            All rights are reserved.
+        </small>
+    </div>
+</footer>
+<link rel="stylesheet" href="/stylesheets/jquery.dataTables.min.css">
+<script src="/javascripts/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('table.table').DataTable();
+    });
+</script>
+</body>
+
+</html>

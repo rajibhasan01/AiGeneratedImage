@@ -40,7 +40,8 @@ app.use((req, res, next) => {
 });
 
 // Set static folder
-app.use(express.static("Uploaded-image"));
+app.use(express.static("uploaded-image"));
+app.use(express.static("public"));
 
 // Parse cookies
 app.use(cookieParser(process.env.COOKIE_SECRET));

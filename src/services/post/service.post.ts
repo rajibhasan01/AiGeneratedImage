@@ -29,7 +29,6 @@ export class PostService implements PostInterface {
         const n = Number(postData.imgCount);
         const size = postData.imgSize;
 
-        console.log(postData);
         const response:any = await openai.createImage({
           prompt,
           n,
@@ -53,7 +52,7 @@ export class PostService implements PostInterface {
         if(postData.imgUrl.length !== 0){
           await dbPost
           .generateImage(postData)
-          .then((res) => resolve("Generate image Successfully"))
+          .then((res) => resolve(res))
           .catch((err) => reject("Failed to genearate image. Please try again"));
         }
       }).catch((error) => {
@@ -66,32 +65,54 @@ export class PostService implements PostInterface {
 
   public async downloadFile(url: any){
 
-      try{
-        return new Promise(async(resolve, reject) => {
-          const name = alphNumericName();
-          const path = `./uploaded-image/dalleImage/${name}`;
-          const filePath = fs.createWriteStream(path);
-          const Request = https.get(url, (response) => {
-            response.pipe(filePath);
+  try{
+    return new Promise(async(resolve, reject) => {
+      const name = alphNumericName() + '.png';
+      const path = `./uploaded-image/dalleImage/${name}`;
+      const filePath = fs.createWriteStream(path);
+      const Request = https.get(url, (response) => {
+        response.pipe(filePath);
 
-            filePath.on('finish', () => {
-              resolve(name);
-            });
-          }).on('error', (err) => {
-            fs.unlink(path, (error => {
-              if(error){
-                reject(error);
-              }
-            }));
+        filePath.on('finish', () => {
+          resolve(name);
+        });
+      }).on('error', (err) => {
+        fs.unlink(path, (error => {
+          if(error){
+            reject(error);
+          }
+        }));
 
-            if(err){
-              reject(err);
-            }
-          })
+        if(err){
+          reject(err);
+        }
+      })
     }).catch((error) => {
       throw error;
     })
   }  catch(error){
+    throw error;
+  }
+ }
+
+ public async getImageList(imgId: any){
+  try{
+    return new Promise(async(resolve, reject) => {
+      const result = await dbPost.getImageInfo(imgId).catch((error) => {
+        reject(error);
+      });
+
+      if(result){
+        resolve(result);
+      } else {
+        reject('Not found');
+      }
+
+    }).catch((err) => {
+      throw err;
+    })
+
+  }catch(error){
     throw error;
   }
  }
