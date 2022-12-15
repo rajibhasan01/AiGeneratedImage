@@ -7,6 +7,11 @@ import { PostService } from "../../services/post/service.post";
 
 const postService = PostService.getInstance();
 
+
+export const homePage = async (req:any, res:any, next:any) => {
+  res.render('pages/home.ejs');
+}
+
 /**
  * Create Post
  */
@@ -18,7 +23,7 @@ export const generateImage = async (req: Request & { body: Post }, res: any) => 
     const error = validationResult(req).formatWith(({ msg }) => msg);
     const hasError = !error.isEmpty();
     if (hasError) {
-      res.status(422).json({ error: error.array() });
+      res.status(422).json({ status: 422, message: error.array().join(', ') });
     } else {
       const result = await postService.generateImage(data).catch((err) => {
         throw err;

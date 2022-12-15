@@ -1,4 +1,4 @@
-class Post {
+export class Post {
   imgUrl: any;
   prompt: string;
   imgCount: number;
@@ -21,5 +21,3 @@ class Post {
     return Post.post;
   }
 }
-
-export { Post };

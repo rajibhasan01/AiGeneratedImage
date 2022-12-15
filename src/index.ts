@@ -1,5 +1,6 @@
 // External imports
 import cors from "cors";
+import path from 'path';
 import dotenv from "dotenv";
 import express from "express";
 import cookieParser from "cookie-parser";
@@ -15,6 +16,8 @@ app.use(express.json({limit: '50mb'})); // Support json encoded bodies upto 50 m
 app.use(express.urlencoded({ extended: true, limit: '50mb'})); // Support encoded bodies
 app.use(cors(options));
 dotenv.config();
+
+app.set('views', "views");
 
 // Set static folder
 app.use(express.static("Uploaded-image"));

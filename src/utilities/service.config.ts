@@ -1,4 +1,5 @@
 // External import
+import "dotenv/config";
 import { Configuration, OpenAIApi } from "openai";
 
 // Internal import
@@ -21,7 +22,7 @@ export class ConfigService{
 };
 
 const configuration = new Configuration({
-    apiKey: "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"
+    apiKey: process.env.OPENAI_API_KEY
   });
 
 export const openai = new OpenAIApi(configuration);

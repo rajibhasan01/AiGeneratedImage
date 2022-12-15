@@ -2,14 +2,14 @@
 import express from "express";
 
 // Internal import
-import homeRoute from "./home/route.home";
 import postRoute from "./posts/route.posts";
+import loginRoute from "./login/route.login";
 
 // Create a new router object
 const registeredRouters = express.Router();
 
 
-registeredRouters.use("/", homeRoute);
-registeredRouters.use("/post", postRoute);
+registeredRouters.use("/", postRoute);
+registeredRouters.use("/auth", loginRoute);
 
 export = registeredRouters;

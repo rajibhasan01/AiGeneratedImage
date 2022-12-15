@@ -29,6 +29,7 @@ export class PostService implements PostInterface {
         const n = Number(postData.imgCount);
         const size = postData.imgSize;
 
+        console.log(postData);
         const response:any = await openai.createImage({
           prompt,
           n,
@@ -68,7 +69,7 @@ export class PostService implements PostInterface {
       try{
         return new Promise(async(resolve, reject) => {
           const name = alphNumericName();
-          const path = `./uploaded-image/${name}.jpg`;
+          const path = `./uploaded-image/dalleImage/${name}`;
           const filePath = fs.createWriteStream(path);
           const Request = https.get(url, (response) => {
             response.pipe(filePath);

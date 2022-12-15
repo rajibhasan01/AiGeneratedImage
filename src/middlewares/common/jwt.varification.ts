@@ -11,7 +11,7 @@ const config = ConfigService.getInstance().getConfig();
 
 
 dotenv.config();
-const tokenSecret = process.env.ACC
+const tokenSecret = process.env.ACCESSS_TOKEN_SECRET;
 
 export class JwtAuthentication implements IAuthService{
     private static jwtAuth : JwtAuthentication;
@@ -37,7 +37,8 @@ export class JwtAuthentication implements IAuthService{
                     } else {
                         resolve({
                             status: 200,
-                            message: "token created"
+                            message: "token created",
+                            token
                         });
                     }
                 }
