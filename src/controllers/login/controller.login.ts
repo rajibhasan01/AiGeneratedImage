@@ -34,6 +34,7 @@ export const adminLogin = async (req: Request & { body: Login } & {session: any}
             });
             if(result){
                 req.session.accessToken = result.token;
+                delete req.session.error;
                 res.redirect('/');
                 // res.status(200).json(result);
             }

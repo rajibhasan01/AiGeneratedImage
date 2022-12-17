@@ -21,11 +21,9 @@ const checkAuth = async (req: any, res: any, next: any) => {
             req.session.user = isValidToken?.username;
             next();
         } else {
-            req.session.error = "Invalid Token.";
             res.redirect('/auth/login');
         }
     } catch (err){
-        req.session.error = "Invalid Token.";
         res.redirect('/auth/login');
     }
 };
