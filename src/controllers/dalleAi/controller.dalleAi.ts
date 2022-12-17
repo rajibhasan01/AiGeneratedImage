@@ -2,21 +2,22 @@
 import { validationResult } from "express-validator";
 
 // Internal import
-import { Post } from "../../model/model.post";
-import { PostService } from "../../services/post/service.post";
+import { DalleAi } from "../../model/model.dalleai";
+import { DalleAiService } from "../../services/dalleAi/service.post";
 import { ConfigService } from "../../utilities/service.config";
 
-const postService = PostService.getInstance();
+const dalleAiService = DalleAiService.getInstance();
 const config = ConfigService.getInstance().getConfig();
 
 
+// Home page
 export const homePage = async (req:any, res:any, next:any) => {
 
   let images:any = [];
   let searchText = '';
   try{
     if(req?.session?.imgId){
-      const result: any = await postService.getImageList(req?.session?.imgId).catch((error) => {
+      const result: any = await dalleAiService.getImageList(req?.session?.imgId).catch((error) => {
         throw error;
       });
       if(result){
@@ -46,11 +47,11 @@ export const homePage = async (req:any, res:any, next:any) => {
 }
 
 /**
- * Create Post
+ * Generate Image from prompt
  */
 
-export const generateImage = async (req: Request & { body: Post } & {session: any}, res: any) => {
-  const data: Post = req.body;
+export const generateImage = async (req: Request & { body: DalleAi } & {session: any}, res: any) => {
+  const data: DalleAi = req.body;
 
   try {
     const error = validationResult(req).formatWith(({ msg }) => msg);
@@ -58,7 +59,7 @@ export const generateImage = async (req: Request & { body: Post } & {session: an
     if (hasError) {
       res.status(422).json({ status: 422, message: error.array().join(', ') });
     } else {
-      const result: any = await postService.generateImage(data).catch((err) => {
+      const result: any = await dalleAiService.generateImage(data).catch((err) => {
         throw err;
       });
       if (result) {
@@ -75,3 +76,8 @@ export const generateImage = async (req: Request & { body: Post } & {session: an
     res.redirect('/');
   }
 };
+
+/**
+ * Generate image variations
+ */
+

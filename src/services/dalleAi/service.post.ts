@@ -3,25 +3,25 @@ import fs from "fs";
 import https from "https";
 
 // Internal import
-import { Post } from "../../model/model.post";
-import { openai } from "./../../utilities/service.config";
-import { DbPost } from "../../providers/database/post/db.post";
-import { PostInterface } from "./../../interfaces/IPostService";
-import { alphNumericName } from "./../../utilities/generateUniqueName";
+import { DalleAi } from "../../model/model.dalleai";
+import { openai } from "../../utilities/service.config";
+import { DbDalleAi } from "../../providers/database/dalleAi/db.dalleAi";
+import { DalleAiInterface } from "../../interfaces/IDalleAiService";
+import { alphNumericName } from "../../utilities/generateUniqueName";
 
-const dbPost = DbPost.getInstance();
+const dbDalleAi = DbDalleAi.getInstance();
 
 
-export class PostService implements PostInterface {
-  public static postService: PostService;
+export class DalleAiService implements DalleAiInterface {
+  public static dalleAiService: DalleAiService;
   private constructor() {}
   public static getInstance() {
-    if (!PostService.postService) {
-      PostService.postService = new PostService();
+    if (!DalleAiService.dalleAiService) {
+      DalleAiService.dalleAiService = new DalleAiService();
     }
-    return PostService.postService;
+    return DalleAiService.dalleAiService;
   }
-  public async generateImage(postData: Post) {
+  public async generateImage(postData: DalleAi) {
     try {
       return new Promise(async (resolve, reject) => {
 
@@ -50,7 +50,7 @@ export class PostService implements PostInterface {
         }
 
         if(postData.imgUrl.length !== 0){
-          await dbPost
+          await dbDalleAi
           .generateImage(postData)
           .then((res) => resolve(res))
           .catch((err) => reject("Failed to genearate image. Please try again"));
@@ -98,7 +98,7 @@ export class PostService implements PostInterface {
  public async getImageList(imgId: any){
   try{
     return new Promise(async(resolve, reject) => {
-      const result = await dbPost.getImageInfo(imgId).catch((error) => {
+      const result = await dbDalleAi.getImageInfo(imgId).catch((error) => {
         reject(error);
       });
 

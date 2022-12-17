@@ -2,7 +2,7 @@
 import express from "express";
 
 // Internal import
-import postRoute from "./posts/route.posts";
+import dalleAiRoute from "./dalleAi/route.dalleAi";
 import loginRoute from "./login/route.login";
 import { JwtAuthentication } from "../middlewares/common/jwt.varification";
 
@@ -29,7 +29,7 @@ const checkAuth = async (req: any, res: any, next: any) => {
 };
 
 registeredRouters.use("/auth", loginRoute);
-registeredRouters.use("/", checkAuth, postRoute);
+registeredRouters.use("/", checkAuth, dalleAiRoute);
 
 
 export = registeredRouters;

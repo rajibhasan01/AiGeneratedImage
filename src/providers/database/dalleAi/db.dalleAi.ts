@@ -2,26 +2,26 @@
 import { MongoClient, ObjectId } from "mongodb";
 
 // Internal import
-import { Post } from "../../../model/model.post";
+import { DalleAi } from "../../../model/model.dalleai";
 import { ConfigService } from "../../../utilities/service.config";
 
 const config = ConfigService.getInstance().getConfig();
 
-export class DbPost {
-  private static dbPost: DbPost;
+export class DbDalleAi {
+  private static dbDalleAi: DbDalleAi;
   private collectionName: string;
 
   constructor() {
-    this.collectionName = "post";
+    this.collectionName = "dalleAi";
   }
   /**
    * getInstance
    */
   public static getInstance() {
-    if (!DbPost.dbPost) {
-      DbPost.dbPost = new DbPost();
+    if (!DbDalleAi.dbDalleAi) {
+      DbDalleAi.dbDalleAi = new DbDalleAi();
     }
-    return DbPost.dbPost;
+    return DbDalleAi.dbDalleAi;
   }
   /**
    * DB Connection
@@ -33,7 +33,7 @@ export class DbPost {
   /**
    * createPost
    */
-  public async generateImage(post: Post) {
+  public async generateImage(post: DalleAi) {
     try {
       return await new Promise(async (resolve, reject) => {
         const dbConn = await this.getDbConnection();

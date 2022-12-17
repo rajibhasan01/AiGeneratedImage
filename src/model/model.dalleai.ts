@@ -1,11 +1,11 @@
-export class Post {
+export class DalleAi {
   imgUrl: any;
   prompt: string;
   imgCount: number;
   imgSize: any;
   createdAt: Date;
 
-  private static post: Post;
+  private static dalleAi: DalleAi;
 
   private constructor() {
     if (!this.createdAt) {
@@ -14,10 +14,10 @@ export class Post {
   }
 
   public static getInstance() {
-    if (!Post.post) {
-      Post.post = new Post();
+    if (!DalleAi.dalleAi) {
+      DalleAi.dalleAi = new DalleAi();
     }
 
-    return Post.post;
+    return DalleAi.dalleAi;
   }
 }
