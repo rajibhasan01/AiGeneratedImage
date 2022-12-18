@@ -29,7 +29,7 @@ const checkAuth = async (req: any, res: any, next: any) => {
 };
 
 registeredRouters.use("/auth", loginRoute);
-registeredRouters.use("/", dalleAiRoute);
+registeredRouters.use("/", checkAuth, dalleAiRoute);
 
 
 export = registeredRouters;
