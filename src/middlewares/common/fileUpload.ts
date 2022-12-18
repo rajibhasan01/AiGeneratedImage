@@ -30,6 +30,7 @@ export const writeFileToLocalStorage = async (req: any, res: any, next: any) => 
             '-'
             )}`;
 
+            req.filePath = imagePath;
             const fileContents = Buffer.from(image.buffer, 'base64');
             fs.writeFile(`uploaded-image/${imagePath}`, fileContents, (err) => {
             if (err) throw err;
@@ -41,7 +42,8 @@ export const writeFileToLocalStorage = async (req: any, res: any, next: any) => 
         hasError = error;
     } finally {
         if(hasError){
-            next(hasError);
+            req.session.error = hasError.message;
+            res.direct('/variations')
         } else {
             next();
         }

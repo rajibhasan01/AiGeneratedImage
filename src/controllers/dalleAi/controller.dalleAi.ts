@@ -79,10 +79,78 @@ export const generateImage = async (req: Request & { body: DalleAi } & {session:
   }
 };
 
+
+// Dalle Image Variation page
+export const imageVariationPage = async (req:any, res:any, next:any) => {
+
+  let images:any = [];
+  let searchText = '';
+  try{
+    if(req?.session?.imgId){
+      const result: any = await dalleAiService.getImageList(req?.session?.imgId).catch((error) => {
+        throw error;
+      });
+      if(result){
+        images = result?.imgUrl;
+        searchText = ' - ' + result?.prompt;
+      }
+    }
+  } catch (error) {
+    req.session.error = error;
+  } finally {
+    const success = req?.session?.success !== undefined ? req.session.success : null;
+    delete req?.session?.success;
+    const error = req?.session?.error !== undefined ? req.session.error : null;
+    delete req?.session?.error;
+    delete req?.session?.imgId;
+
+    res.render('pages/dalleai/imageVariationHome.ejs', {
+      url: config.baseUrl,
+      searchText,
+      title: 'Brain Craft AI Generated Image Service',
+      formPanelTitle: 'AI Image Variations Generator',
+      images,
+      success,
+      error,
+    });
+  }
+}
+
 /**
  * Generate image variations
  */
 
-export const generateImageVariation = async (req: any, res: any) => {
-  res.send("Ok");
+export const generateImageVariation = async (req: any, res: any, next: any) => {
+  const data: DalleAi = req?.body;
+  const err: any = '';
+
+  try{
+    const error = validationResult(req).formatWith(({ msg }) => msg);
+    const hasError = !error.isEmpty();
+    if (hasError) {
+      // res.status(422).json({ status: 422, message: error.array().join(', ') });
+      throw new Error(error.array().join(', '));
+    } else {
+      data.filePath = `uploaded-image${req.filePath}`;
+      const result: any = await dalleAiService.generateImageVariations(data).catch((er) => {
+        throw new Error (er);
+      });
+      if (result) {
+        req.session.success = 'Image Variations Generated Successfully.';
+        req.session.imgId = result.insertedId;
+      } else {
+        throw new Error ("Failed to generate image, try again.");
+      }
+    }
+
+  } catch (error){
+    console.log(error);
+    req.session.error = error.message;
+  } finally {
+    if(err){
+      next(err)
+    } else {
+      res.redirect('/variations');
+    }
+  }
 }

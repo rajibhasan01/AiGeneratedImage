@@ -4,13 +4,14 @@ import express from "express";
 import { ConfigService } from "../../utilities/service.config";
 import { postBodyValidation } from "../../middlewares/validation/validation";
 import { fileUpload, writeFileToLocalStorage } from "../../middlewares/common/fileUpload";
-import { generateImage, homePage, generateImageVariation } from "../../controllers/dalleAi/controller.dalleAi";
+import { generateImage, homePage, generateImageVariation, imageVariationPage } from "../../controllers/dalleAi/controller.dalleAi";
 
 const dalleAiRoute = express.Router();
 const config = ConfigService.getInstance().getConfig();
 
 dalleAiRoute.get('/', homePage);
 dalleAiRoute.post('/', postBodyValidation, generateImage);
+dalleAiRoute.get('/variations', imageVariationPage);
 dalleAiRoute.post('/variations', fileUpload.single('file'),  writeFileToLocalStorage, generateImageVariation)
 
 export = dalleAiRoute;

@@ -4,6 +4,7 @@ export class DalleAi {
   imgCount: number;
   imgSize: any;
   createdAt: Date;
+  filePath?: any;
 
   private static dalleAi: DalleAi;
 
