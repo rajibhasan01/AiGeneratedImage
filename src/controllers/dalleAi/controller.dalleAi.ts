@@ -6,6 +6,7 @@ import { DalleAi } from "../../model/model.dalleai";
 import { DalleAiService } from "../../services/dalleAi/service.post";
 import { ConfigService } from "../../utilities/service.config";
 
+
 const dalleAiService = DalleAiService.getInstance();
 const config = ConfigService.getInstance().getConfig();
 
@@ -57,7 +58,8 @@ export const generateImage = async (req: Request & { body: DalleAi } & {session:
     const error = validationResult(req).formatWith(({ msg }) => msg);
     const hasError = !error.isEmpty();
     if (hasError) {
-      res.status(422).json({ status: 422, message: error.array().join(', ') });
+      // res.status(422).json({ status: 422, message: error.array().join(', ') });
+      req.session.error = error.array().join(', ');
     } else {
       const result: any = await dalleAiService.generateImage(data).catch((err) => {
         throw err;
@@ -81,3 +83,6 @@ export const generateImage = async (req: Request & { body: DalleAi } & {session:
  * Generate image variations
  */
 
+export const generateImageVariation = async (req: any, res: any) => {
+  res.send("Ok");
+}

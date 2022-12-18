@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser";
 
 // Internal imports
 import registeredRouters from "./routes/register-routing-files";
+import { notFoundHandler, errorHandler } from "./middlewares/common/errorHandler";
 import { options } from "./middlewares/common/cors";
 
 const app = express();
@@ -48,6 +49,12 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 
 // Routing setup
 app.use('/', registeredRouters);
+
+// Handle error for not found page
+app.use(notFoundHandler);
+
+// Handle error
+app.use(errorHandler);
 
 // Start the Express server
 app.listen(port, ()=> {

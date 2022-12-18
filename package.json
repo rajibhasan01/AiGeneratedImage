@@ -17,6 +17,7 @@
   "devDependencies": {
     "@types/cookie-parser": "^1.4.3",
     "@types/express-session": "^1.17.5",
+    "@types/http-errors": "^2.0.1",
     "@types/passport": "^1.0.11",
     "@types/passport-google-oauth20": "^2.0.11",
     "npm-run-all": "^4.1.5",
