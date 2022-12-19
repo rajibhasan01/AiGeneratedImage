@@ -121,7 +121,7 @@ export class DalleAiService implements DalleAiInterface {
   try {
     return new Promise(async (resolve, reject) => {
 
-      const filePath:any = fs.createReadStream('/home/rajibhasan/Desktop/Ai_Art/server/uploaded-image/uploadedImage/1671366651357_111A8963.jpg');
+      const filePath:any = fs.createReadStream(postData?.filePath);
       const n = Number(postData.imgCount);
       const size = postData.imgSize;
 

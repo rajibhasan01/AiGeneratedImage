@@ -7,12 +7,12 @@ const fileStorage = multer.memoryStorage();
 export const fileUpload = multer({
   storage: fileStorage,
   limits: {
-    fileSize: 15000000,
+    fileSize: 4000000,
   },
   fileFilter(req: any, file, cb) {
-    if (!file.originalname.match(/\.(png|jpg)$/)) {
+    if (!file.originalname.match(/\.(png)$/)) {
       // upload only png and jpg format
-      return cb(new Error("Please select jpg or png Image"));
+      return cb(new Error("Please select png Image Only"));
     }
     cb(undefined, true);
   },

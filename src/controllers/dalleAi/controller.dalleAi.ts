@@ -133,7 +133,7 @@ export const generateImageVariation = async (req: any, res: any, next: any) => {
     } else {
       data.filePath = `uploaded-image${req.filePath}`;
       const result: any = await dalleAiService.generateImageVariations(data).catch((er) => {
-        throw new Error (er);
+        throw new Error ("Image should be png and it should be in square shape");
       });
       if (result) {
         req.session.success = 'Image Variations Generated Successfully.';

@@ -9,5 +9,5 @@ export const config = {
       "_id": "613f3e819a5bd32118cc8271"
   },
   "salt": "^DxHD<7m?XCXL&q;trehvbdk/7942><!Y{6:rp",
-  "baseUrl": "http://localhost:5000/dalleImage/"
+  "baseUrl": "http://localhost:5001/dalleImage/"
   };
