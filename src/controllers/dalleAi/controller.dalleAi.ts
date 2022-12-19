@@ -37,6 +37,7 @@ export const homePage = async (req:any, res:any, next:any) => {
 
     res.render('pages/dalleai/home.ejs', {
       url: config.baseUrl,
+      form: 'form',
       searchText,
       title: 'Brain Craft AI Generated Image Service',
       formPanelTitle: 'AI Image Generator Box',
@@ -104,8 +105,9 @@ export const imageVariationPage = async (req:any, res:any, next:any) => {
     delete req?.session?.error;
     delete req?.session?.imgId;
 
-    res.render('pages/dalleai/imageVariationHome.ejs', {
+    res.render('pages/dalleai/home.ejs', {
       url: config.baseUrl,
+      form: 'imageVariation',
       searchText,
       title: 'Brain Craft AI Generated Image Service',
       formPanelTitle: 'AI Image Variations Generator',
@@ -151,6 +153,83 @@ export const generateImageVariation = async (req: any, res: any, next: any) => {
       next(err)
     } else {
       res.redirect('/variations');
+    }
+  }
+}
+
+// Dalle Image Edit page
+export const imageEdit = async (req:any, res:any, next:any) => {
+
+  let images:any = [];
+  let searchText = '';
+  try{
+    if(req?.session?.imgId){
+      const result: any = await dalleAiService.getImageList(req?.session?.imgId).catch((error) => {
+        throw error;
+      });
+      if(result){
+        images = result?.imgUrl;
+        searchText = ' - ' + result?.prompt;
+      }
+    }
+  } catch (error) {
+    req.session.error = error;
+  } finally {
+    const success = req?.session?.success !== undefined ? req.session.success : null;
+    delete req?.session?.success;
+    const error = req?.session?.error !== undefined ? req.session.error : null;
+    delete req?.session?.error;
+    delete req?.session?.imgId;
+
+    res.render('pages/dalleai/home.ejs', {
+      url: config.baseUrl,
+      form: 'imageEdit',
+      searchText,
+      title: 'Brain Craft AI Generated Image Service',
+      formPanelTitle: 'AI Image Edit',
+      images,
+      success,
+      error,
+    });
+  }
+}
+
+/**
+ * Edit image variations
+ */
+
+ export const imageEditWithPrompt = async (req: any, res: any, next: any) => {
+  const data: DalleAi = req?.body;
+  const err: any = '';
+
+  try{
+    const error = validationResult(req).formatWith(({ msg }) => msg);
+    const hasError = !error.isEmpty();
+    if (hasError) {
+      // res.status(422).json({ status: 422, message: error.array().join(', ') });
+      throw new Error(error.array().join(', '));
+    } else {
+      data.filePath = `uploaded-image${req.filePath}`;
+      data.maskImg = req?.filePath2 ? `uploaded-image${req?.filePath2}` : 'undefined';
+
+      const result: any = await dalleAiService.generateEditedImage(data).catch((er) => {
+        throw new Error ("Image should be png and it should be in square shape");
+      });
+      if (result) {
+        req.session.success = 'Image Edited Variations Generated Successfully.';
+        req.session.imgId = result.insertedId;
+      } else {
+        throw new Error ("Failed to generate image, try again.");
+      }
+    }
+
+  } catch (error){
+    req.session.error = error.message;
+  } finally {
+    if(err){
+      next(err)
+    } else {
+      res.redirect('/edit-image');
     }
   }
 }

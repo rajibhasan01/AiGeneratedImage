@@ -5,6 +5,7 @@ export class DalleAi {
   imgSize: any;
   createdAt: Date;
   filePath?: any;
+  maskImg? :any;
 
   private static dalleAi: DalleAi;
 

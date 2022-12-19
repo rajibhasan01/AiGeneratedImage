@@ -159,4 +159,53 @@ export class DalleAiService implements DalleAiInterface {
   }
 }
 
+public async generateEditedImage(postData: DalleAi) {
+  try {
+    return new Promise(async (resolve, reject) => {
+
+      const filePath:any = fs.createReadStream(postData?.filePath);
+      const n = Number(postData.imgCount);
+      const size = postData.imgSize;
+      const prompt = postData.prompt;
+      let maskImg = filePath;
+      if (typeof postData?.maskImg !== 'undefined'){
+        maskImg = fs.createReadStream(postData?.maskImg);
+      }
+
+      const response:any = await openai.createImageEdit(
+        filePath,
+        maskImg,
+        prompt,
+        n,
+        size
+      ).catch((error) => {
+        reject(error.message);
+      });
+      const datas = response?.data?.data;
+      postData.imgUrl = [];
+      if (typeof datas !== "undefined"){
+        for(const data of datas){
+          const fileName = await this.downloadFile(data?.url).catch((error) => {
+            reject(error.message);
+          });
+          if (fileName){
+            postData.imgUrl.push(fileName);
+          }
+        };
+      }
+
+      if(postData.imgUrl.length !== 0){
+        await dbDalleAi
+        .generateImage(postData)
+        .then((res) => resolve(res))
+        .catch((err) => reject("Failed to genearate image variations. Please try again"));
+      }
+    }).catch((error) => {
+      throw error;
+    });
+  } catch (error) {
+    throw error;
+  }
+}
+
 }
